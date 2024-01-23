@@ -22,15 +22,15 @@ export const Form: FC = () => {
 
     const handleTransactionSubmit = async (studentIntro: StudentIntro) => {
         if (!publicKey) {
-            alert('Please connect your wallet!')
-            return
+            alert('Please connect wallet!');
+            return;
         }
 
-        const buffer = studentIntro.serialize()
-        const transaction = new web3.Transaction()
+        const transaction = new web3.Transaction();
+        const buffer = studentIntro.serialize();
 
         const [pda] = await web3.PublicKey.findProgramAddress(
-            [publicKey.toBuffer()],
+            [publicKey.toBuffer(), Buffer.from(studentIntro.name)],
             new web3.PublicKey(STUDENT_INTRO_PROGRAM_ID)
         )
 
@@ -39,7 +39,7 @@ export const Form: FC = () => {
                 {
                     pubkey: publicKey,
                     isSigner: true,
-                    isWritable: false,
+                    isWritable: false
                 },
                 {
                     pubkey: pda,
@@ -52,20 +52,20 @@ export const Form: FC = () => {
                     isWritable: false
                 }
             ],
-            data: buffer,
-            programId: new web3.PublicKey(STUDENT_INTRO_PROGRAM_ID)
+            programId: new web3.PublicKey(STUDENT_INTRO_PROGRAM_ID),
+            data: buffer
         })
 
         transaction.add(instruction)
 
+        
         try {
-            let txid = await sendTransaction(transaction, connection)
-            alert(`Transaction submitted: https://explorer.solana.com/tx/${txid}?cluster=devnet`)
-            console.log(`Transaction submitted: https://explorer.solana.com/tx/${txid}?cluster=devnet`)
-        } catch (e) {
-            console.log(JSON.stringify(e))
-            alert(JSON.stringify(e))
+            const txnid = await sendTransaction(transaction, connection)
+            console.log(`Transacation submitted. View here: https://explorer.solana.com/tx/${txnid}?cluster=devnet`)
+        } catch (err) {
+            alert(JSON.stringify(err))
         }
+
     }
 
     return (
