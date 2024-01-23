@@ -57,7 +57,6 @@ export const Form: FC = () => {
         })
 
         transaction.add(instruction)
-
         
         try {
             const txnid = await sendTransaction(transaction, connection)
