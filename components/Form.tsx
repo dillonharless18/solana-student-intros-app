@@ -30,7 +30,7 @@ export const Form: FC = () => {
         const buffer = studentIntro.serialize();
 
         const [pda] = await web3.PublicKey.findProgramAddress(
-            [publicKey.toBuffer(), Buffer.from(studentIntro.name)],
+            [publicKey.toBuffer()],
             new web3.PublicKey(STUDENT_INTRO_PROGRAM_ID)
         )
 
@@ -52,8 +52,8 @@ export const Form: FC = () => {
                     isWritable: false
                 }
             ],
-            programId: new web3.PublicKey(STUDENT_INTRO_PROGRAM_ID),
-            data: buffer
+            data: buffer,
+            programId: new web3.PublicKey(STUDENT_INTRO_PROGRAM_ID)
         })
 
         transaction.add(instruction)
