@@ -9,6 +9,7 @@ export const StudentIntroList: FC = () => {
     const connection = new web3.Connection(web3.clusterApiUrl('devnet'))
     const [studentIntros, setStudentIntros] = useState<StudentIntro[]>([])
     const [page, setPage] = useState(1)
+    const [searchInputText, setSearchInputText] = useState('')
     const [search, setSearch] = useState('')
 
     useEffect(() => {
@@ -27,12 +28,26 @@ export const StudentIntroList: FC = () => {
                 <Input
                     id='search'
                     color='gray.400'
-                    onChange={event => setSearch(event.currentTarget.value)}
+                    onChange={event => setSearchInputText(event.currentTarget.value)}
                     placeholder='Search'
                     w='97%'
                     mt={2}
                     mb={2}
                 />
+                <button
+                    style={{
+                        marginLeft: '1em', 
+                        backgroundColor: 'white', 
+                        padding: '0 0.5em',
+                        borderRadius: 5
+                    }} 
+                    name='search-button' 
+                    onClick={event => {
+                        setSearch(searchInputText)
+                    }}
+                >
+                    Search
+                </button>
             </Center>
             {
                 studentIntros.map((studentIntro, i) => <Card key={i} studentIntro={studentIntro} />)
